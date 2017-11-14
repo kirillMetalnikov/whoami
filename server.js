@@ -15,7 +15,13 @@ app.get("/", function (req, res) {
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/api", function (req, res) {
   res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({req: req})
+  var result = {};
+  result.ip = req.headers["x-forwarded-for"].split(",")[0]
+  result.language = req.headers["accept-language"].split(",")[0]
+  result.software = req.headers["user-agent"].match(/\((.+)\)/)[1]
+  
+ // res.write(JSON.stringify(result));
+  res.end(JSON.stringify(result));
 });
 
 // listen for requests :)
